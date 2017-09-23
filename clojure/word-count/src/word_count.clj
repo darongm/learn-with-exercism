@@ -1,12 +1,10 @@
-(ns word-count)
+(ns word-count
+  (:require
+   [clojure.string :as string]))
 
 
 (defn word-count [words]
-  (let [letter?   (fn [^Character c] (and
-                                       (Character/isLetter c)
-                                       (not (Character/isSpace c))))
-        to-string (fn [coll] (apply str coll))]
-    (->> words
-      (partition-by letter?)
-      (map to-string)
-      (frequencies))))
+  (->> words
+    (string/lower-case)
+    (re-seq #"\w+")
+    (frequencies)))
