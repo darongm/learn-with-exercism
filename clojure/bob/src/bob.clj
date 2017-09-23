@@ -11,7 +11,7 @@
 (defn response-for [param]
   (let [yell?     (some->> param
                     (filter letter?)
-                    (seq)
+                    (seq) ; this is required to work with some->>, since (every? true? []) always return true.
                     (every? upper-case?))
         question? (string/ends-with? param "?")
         silence?  (->> param
