@@ -1,5 +1,5 @@
 (ns hello-world)
 
-(defn hello [] ;; <- arglist goes here
-  ;; your code goes here
-)
+(defn hello
+  ([] (hello "World"))
+  ([name] (str "Hello, " name "!")))
