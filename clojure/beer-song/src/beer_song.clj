@@ -16,15 +16,17 @@
         verse-n (str
                   n " bottles of beer on the wall, " n " bottles of beer.\n"
                   "Take one down and pass it around, " (dec n) " bottles of beer on the wall.\n")]
-    (cond
-      (= 0 n) verse-0
-      (= 1 n) verse-1
-      (= 2 n) verse-2
-      :else verse-n)))
+    (case n
+      0 verse-0
+      1 verse-1
+      2 verse-2
+      verse-n)))
 
 
 (defn sing
-  ([end] (sing end 0))
+  ([end]
+   (sing end 0))
+
   ([end start]
    (let [include-start (dec start)]
      (->>
