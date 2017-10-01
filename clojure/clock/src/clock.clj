@@ -1,33 +1,18 @@
 (ns clock)
 
 
-(defn clock- [hour additional-minute minute]
-  (let [mn (- hour additional-minute)
-        mn (mod mn 24)
-        sc minute
-        sc (mod sc 60)]
-    {:hour   mn
-     :minute sc}))
+;; inspired by http://exercism.io/submissions/468867ee4cbd47ca83a4d850f3082e42
+(defn time-in-minute [hour minute]
+  (let [hour-in-mn (* 60 hour)
+        all-in-mn  (+ hour-in-mn minute)
+        all-in-mn  (mod all-in-mn (* 60 24))]
+    all-in-mn))
 
 
 (defn clock [hour minute]
-  (let [wrap-hour (cond
-                    (<= 60 minute)
-                    (-> minute
-                      (quot 60)
-                      (mod 24))
-
-                    (< minute 0)
-                    (-> (* -1 minute)
-                      (quot 60)
-                      (+ 1)
-                      (mod 24)
-                      (* -1))
-
-                    :else 0)
-        h         (+ hour wrap-hour)
-        h         (mod h 24)
-        mn        (mod minute 60)]
+  (let [time (time-in-minute hour minute)
+        h    (quot time 60)
+        mn   (mod time 60)]
     {:hour   h
      :minute mn}))
 
