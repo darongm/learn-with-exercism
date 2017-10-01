@@ -1,4 +1,5 @@
-(ns phone-number)
+(ns phone-number
+  [:require [clojure.string :as string]])
 
 
 (defn nanp-number [digits]
@@ -16,24 +17,21 @@
 
 
 (defn number [coll]
-  (let [[area-code exchange-code subscriber-number] (->nanp-number coll)]
-    (str
-      (clojure.string/join area-code)
-      (clojure.string/join exchange-code)
-      (clojure.string/join subscriber-number))))
+  (->> coll
+    (->nanp-number)
+    (flatten)
+    (string/join)))
 
 
 (defn area-code [coll]
   (let [[area-code _ _] (->nanp-number coll)]
-    (clojure.string/join area-code)))
+    (string/join area-code)))
 
 
 (defn pretty-print [coll]
   (let [[area-code exchange-code subscriber-number] (->nanp-number coll)]
     (str
-      "("
-      (clojure.string/join area-code)
-      ") "
-      (clojure.string/join exchange-code)
+      "(" (string/join area-code) ") "
+      (string/join exchange-code)
       "-"
-      (clojure.string/join subscriber-number))))
+      (string/join subscriber-number))))
