@@ -21,3 +21,7 @@
 (deftest number<string
   (testing "number < string-length"
     (is (= #{"123" "234" "345"} (set (slices "12345" 3))))))
+
+(deftest number-contains-duplicate
+  (testing "number contains duplicate"
+    (is (= ["12" "22" "22"] (slices "1222" 2)))))

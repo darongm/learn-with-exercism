@@ -1,7 +1,13 @@
 (ns series)
 
-(defn slices [string n]
+
+(defn slices- [string n]
   (->> string
     (partition n 1)
-    (map clojure.string/join)
-    (dedupe)))
+    (map clojure.string/join)))
+
+
+(defn slices [string n]
+  (if (= n 0)
+    [""]
+    (slices- string n)))
