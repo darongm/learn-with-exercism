@@ -6,7 +6,8 @@
     (update-in db [student-grade] conj+ student-name)))
 
 
-(defn grade [db grade])
+(defn grade [db grade]
+  (get db grade []))
 
 
 (defn sorted [db])
