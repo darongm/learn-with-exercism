@@ -10,4 +10,8 @@
   (get db grade []))
 
 
-(defn sorted [db])
+(defn sorted [db]
+  (let [sorted-names (fn [[g names]] [g (sort names)])]
+    (->> db
+      (map sorted-names)
+      (into (sorted-map-by <)))))
