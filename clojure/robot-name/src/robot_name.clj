@@ -3,7 +3,7 @@
    [clojure.string :as string]))
 
 
-(defn random-robot []
+(defn random-robot-name []
   (let [asci-letters (range 65 91)
         asci-digits  (range 48 57)
         part1        (take 2 (shuffle asci-letters))
@@ -17,7 +17,7 @@
 
 (defn random-robot! [*robot]
   (let [f (fn [coll]
-            (->> (repeatedly random-robot)
+            (->> (repeatedly random-robot-name)
               (remove #(contains? coll %))
               (first)
               (conj coll)))]
