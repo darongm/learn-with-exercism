@@ -4,12 +4,9 @@
 
 
 (defn random-robot-name []
-  (let [asci-letters (range 65 91)
-        asci-digits  (range 48 57)
-        part1        (take 2 (shuffle asci-letters))
-        part2        (take 3 (shuffle asci-digits))
-        full-name    (map char (concat part1 part2))]
-    (string/join full-name)))
+  (let [letters (->> (seq "ABCDEFGHIJKLMNOPQRSTUVWXYZ") (shuffle) (take 2))
+        digits  (->> (seq "0123456789") (shuffle) (take 3))]
+    (string/join (concat letters digits))))
 
 
 ;;; Example value: {1 "IT783" 2 "TL408"}
