@@ -12,43 +12,36 @@
     (string/join full-name)))
 
 
-;;; doc https://clojure.org/reference/refs
-(def *robot-coll (ref []))
+;;; Example value: {1 "IT783" 2 "TL408"}
+;;;
+;;; By model `robot` as ID, we can use it as a pointer to its name,
+;;; keep the robot immutable, and reduced the number of states we have to maintain.
+(def *robot-coll (atom {}))
 
 
-(defn random-robot! [*robot]
-  (let [f (fn [coll]
-            (->> (repeatedly random-robot-name)
-              (remove #(contains? coll %))
-              (first)
-              (conj coll)))]
-    ; If use `atom` like below, there's a race condition.
-    ; Assuming the method called by 2 callers at the same time. The following can happen:
-    ; Caller 1: (swap! *robot-coll f) -> ["123"]
-    ; Caller 2: (swap! *robot-coll f) -> ["123" "456"]
-    ; Caller 1: (last @*robot-coll)-> "456"
-    ; Caller 2: (last @*robot-coll)-> "456"
-    ; Which is wrong cause `Caller 1` expects "123" and the names are not unique.
-    (comment
-      (do
-        (swap! *robot-coll f)
-        (last @*robot-coll)))
-    ; Using the semantics of `ref`, changes to `*robot-coll` and `*robot`
-    ; are done in one transaction.
-    ; The trade off is that `ref` reduce concurrency executions.
-    (dosync
-      (alter *robot-coll f)
-      (ref-set *robot (last @*robot-coll)))))
+(defn assoc-random-name
+  ([coll]
+   ; create new robot
+   (assoc-random-name coll (inc (count coll))))
+  ([coll robot]
+   ; update existing robot
+   (let [used-names (set (vals coll))
+         new-name   (->>
+                      (repeatedly random-robot-name)
+                      (remove used-names)
+                      (first))]
+     (assoc coll robot new-name))))
 
 
 (defn robot []
-  (let [*r (ref nil)]
-    (random-robot! *r)
-    *r))
+  (->
+    (swap! *robot-coll assoc-random-name)
+    ; swap! returned value that was swapped in, thus no race condition.
+    (count)))
 
 
-(defn robot-name [*robot] @*robot)
+(defn robot-name [robot] (@*robot-coll robot))
 
 
-(defn reset-name [*robot]
-  (random-robot! *robot))
+(defn reset-name [robot]
+  (swap! *robot-coll assoc-random-name robot))
