@@ -12,21 +12,26 @@
     (string/join full-name)))
 
 
-(defn -robot
-  ([]
-   (random-robot))
-  ([old-name]
-   (->> (repeatedly random-robot)
-     (remove #{old-name})
-     (first))))
+(def *robot-coll (atom []))
+
+
+(defn random-robot! []
+   (let [f (fn [coll]
+             (->> (repeatedly random-robot)
+               (remove #(contains? coll %))
+               (first)
+               (conj coll)))]
+     (do
+       (swap! *robot-coll f)
+       (last @*robot-coll))))
 
 
 (defn robot []
-  (atom (-robot)))
+  (atom (random-robot!)))
 
 
 (defn robot-name [*robot] @*robot)
 
 
 (defn reset-name [*robot]
-  (swap! *robot -robot))
+  (reset! *robot (random-robot!)))
