@@ -1,6 +1,6 @@
 (ns robot-name
- (:require
-  [clojure.string :as string]))
+  (:require
+   [clojure.string :as string]))
 
 
 (defn random-robot []
@@ -12,26 +12,28 @@
     (string/join full-name)))
 
 
-(def *robot-coll (atom []))
+(def *robot-coll (ref []))
 
 
-(defn random-robot! []
-   (let [f (fn [coll]
-             (->> (repeatedly random-robot)
-               (remove #(contains? coll %))
-               (first)
-               (conj coll)))]
-     (do
-       (swap! *robot-coll f)
-       (last @*robot-coll))))
+(defn random-robot! [*robot]
+  (let [f (fn [coll]
+            (->> (repeatedly random-robot)
+              (remove #(contains? coll %))
+              (first)
+              (conj coll)))]
+    (dosync
+      (alter *robot-coll f)
+      (ref-set *robot (last @*robot-coll)))))
 
 
 (defn robot []
-  (atom (random-robot!)))
+  (let [*r (ref nil)]
+    (random-robot! *r)
+    *r))
 
 
 (defn robot-name [*robot] @*robot)
 
 
 (defn reset-name [*robot]
-  (reset! *robot (random-robot!)))
+  (random-robot! *robot))
