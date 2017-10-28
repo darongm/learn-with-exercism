@@ -4,16 +4,10 @@
    [clojure.set :as sets]))
 
 
+;;; inspired by http://exercism.io/submissions/869dfbc792d945b2bec746daa78568b3
 (defn transform [m]
-  (let [lower-case-key (fn [m k-coll v]
-                         (as-> k-coll k
-                           (map string/lower-case k)
-                           (assoc m k v)))
-        expand-map     (fn [m k-coll v]
-                         (-> k-coll
-                           (zipmap (repeat v))
-                           (merge m)))]
-    (->> m
-      (sets/map-invert)
-      (reduce-kv lower-case-key {})
-      (reduce-kv expand-map {}))))
+  (let [new-score (for [[score words] m
+                        word words
+                        :let [lw (string/lower-case word)]]
+                    [lw score])]
+    (into {} new-score)))
