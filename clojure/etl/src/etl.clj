@@ -1,12 +1,15 @@
-(ns etl)
+(ns etl
+  (:require
+   [clojure.string :as string]
+   [clojure.set :as sets]))
 
 
 (defn transform [m]
-  (let [f (fn [acc [k coll]]
-            (reduce #(assoc %1 (clojure.string/lower-case %2) k) acc coll))]
+  (let [lower-case-key (fn [m k-coll v]
+                         (assoc m (map string/lower-case k-coll) v))
+        expand-map     (fn [m k-coll v]
+                         (merge m (zipmap k-coll (repeat v))))]
     (->> m
-      (map (fn [[score letter-coll]] (zipmap letter-coll (repeat score))))
-      (reduce merge {})
-      (reduce-kv #(assoc %1 (clojure.string/lower-case %2) %3) {}))))
-
-
+      (sets/map-invert)
+      (reduce-kv lower-case-key {})
+      (reduce-kv expand-map {}))))
