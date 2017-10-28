@@ -6,9 +6,13 @@
 
 (defn transform [m]
   (let [lower-case-key (fn [m k-coll v]
-                         (assoc m (map string/lower-case k-coll) v))
+                         (as-> k-coll k
+                           (map string/lower-case k)
+                           (assoc m k v)))
         expand-map     (fn [m k-coll v]
-                         (merge m (zipmap k-coll (repeat v))))]
+                         (-> k-coll
+                           (zipmap (repeat v))
+                           (merge m)))]
     (->> m
       (sets/map-invert)
       (reduce-kv lower-case-key {})
