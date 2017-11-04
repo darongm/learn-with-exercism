@@ -17,20 +17,30 @@
     ret))
 
 
-(defn decode [[state digits ret] ^Character ch]
-  (let [digit         true
-        not-digit     false
-        transition-fn {:state/empty {digit     (fn [c] [:state/digit (str c) ret])
-                                     not-digit (fn [c] [:state/empty "1" (concat ret (repeat (Integer/parseInt digits) c))])}
-                       :state/digit {digit     (fn [c] [:state/digit (str digits c) ret])
-                                     not-digit (fn [c] [:state/empty "1" (concat ret (repeat (Integer/parseInt digits) c))])}}
-        f             (get-in transition-fn [state (Character/isDigit ch)] (constantly [:state/unknown digits ret]))]
-    (f ch)))
+(defn decode-stm [[state multiplier ret] ^Character ch]
+  (let [reset-multiplier  str
+        append-ret        #(concat ret [%1])
+        expand-ret        #(concat ret (repeat (Integer/parseInt multiplier) %1))
+        append-multiplier #(str multiplier %1)
+        digit             true
+        not-digit         false
+        stm               {:state/wait-for-digit {digit     (fn [d]
+                                                              [:state/wait-for-char (reset-multiplier d) ret])
+                                                  not-digit (fn [c]
+                                                              [:state/wait-for-digit nil (append-ret c)])}
+                           :state/wait-for-char  {digit     (fn [d]
+                                                              [:state/wait-for-char (append-multiplier d) ret])
+                                                  not-digit (fn [c]
+                                                              [:state/wait-for-digit nil (expand-ret c)])}}
+        digit?            (Character/isDigit ch)
+        transition        (get-in
+                            stm
+                            [state digit?]
+                            (constantly [:state/unknown multiplier ret]))]
+    (transition ch)))
 
 (defn run-length-decode
   "decodes a run-length-encoded string"
   [s]
-  (let [ret (reduce decode [:state/empty "1" []] s)
-        ret (get ret 2)
-        ret (string/join ret)]
-    ret))
+  (let [[_ _ ret] (reduce decode-stm [:state/wait-for-digit nil []] s)]
+    (string/join ret)))
