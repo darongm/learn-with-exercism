@@ -17,6 +17,19 @@
     ret))
 
 
+(defn decode [acc ^Character ch]
+  (let [ch-count #(if (empty? (:digits %1)) 1 (Integer/parseInt (:digits %1)))]
+    (cond
+      (Character/isDigit ch) (update acc :digits str ch)
+      :otherwise (-> acc
+                   (assoc :digits "")
+                   (update :ret concat (repeat (ch-count acc) ch))))))
+
 (defn run-length-decode
   "decodes a run-length-encoded string"
-  [s])
+  [s]
+  (let [init-state {:ret [] :digits ""}]
+    (->> s
+      (reduce decode init-state)
+      (:ret)
+      (string/join))))
