@@ -17,19 +17,20 @@
     ret))
 
 
-(defn decode [acc ^Character ch]
-  (let [ch-count #(if (empty? (:digits %1)) 1 (Integer/parseInt (:digits %1)))]
-    (cond
-      (Character/isDigit ch) (update acc :digits str ch)
-      :otherwise (-> acc
-                   (assoc :digits "")
-                   (update :ret concat (repeat (ch-count acc) ch))))))
+(defn decode [[state digits ret] ^Character ch]
+  (let [digit         true
+        not-digit     false
+        transition-fn {:state/empty {digit     (fn [c] [:state/digit (str c) ret])
+                                     not-digit (fn [c] [:state/empty "1" (concat ret (repeat (Integer/parseInt digits) c))])}
+                       :state/digit {digit     (fn [c] [:state/digit (str digits c) ret])
+                                     not-digit (fn [c] [:state/empty "1" (concat ret (repeat (Integer/parseInt digits) c))])}}
+        f             (get-in transition-fn [state (Character/isDigit ch)] (constantly [:state/unknown digits ret]))]
+    (f ch)))
 
 (defn run-length-decode
   "decodes a run-length-encoded string"
   [s]
-  (let [init-state {:ret [] :digits ""}]
-    (->> s
-      (reduce decode init-state)
-      (:ret)
-      (string/join))))
+  (let [ret (reduce decode [:state/empty "1" []] s)
+        ret (get ret 2)
+        ret (string/join ret)]
+    ret))
