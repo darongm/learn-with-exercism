@@ -1,3 +1,6 @@
 (ns flatten-array)
 
-(defn flatten [coll])
+(defn flatten [coll]
+  (->> coll
+    (clojure.core/flatten)
+    (remove nil?)))
