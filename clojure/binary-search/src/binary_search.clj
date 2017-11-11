@@ -12,7 +12,8 @@
 
 
 (defn search-for [n coll]
-  (let [idx (jbinary-search n coll)]
+  (let [sorted-coll (sort coll)
+        idx         (jbinary-search n sorted-coll)]
     (if (> idx -1)
       idx
       (throw (Exception. "not found")))))
