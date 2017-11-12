@@ -12,47 +12,29 @@
   (Collections/binarySearch coll n))
 
 
-(defn cbinary-search [[n v start-idx ex-end-idx]]
-  (let [mid-idx (middle v)
-        mid-val (get v mid-idx)]
+(defn binary-search-step [[n v start-idx excluded-end-idx]]
+  (let [mid-idx          (middle v)
+        mid-val          (get v mid-idx)
+        excluded-mid-idx (inc mid-idx)]
     (cond
       (empty? v) -1
-      (> n mid-val) [n (subvec v (inc mid-idx)) (+ start-idx mid-idx 1) ex-end-idx]
-      (< n mid-val) [n (subvec v 0 mid-idx) start-idx (- ex-end-idx mid-idx)]
+      (> n mid-val) [n (subvec v excluded-mid-idx) (+ start-idx excluded-mid-idx) excluded-end-idx]
+      (< n mid-val) [n (subvec v 0 mid-idx) start-idx (- excluded-end-idx mid-idx)]
       :else (+ start-idx mid-idx))))
 
-(defn cbinary-search+ [n v]
-  (->> [n v 0 (count v)]
-    (iterate #(if (coll? %1) (cbinary-search %1) %1))
-    (drop-while coll?)
-    (first)))
 
-
-(comment
-  (def n 1)
-  (def v [1 3 4 6 8 9 11])
-  (cbinary-search+ 1 [1 3 4 6 8 9 11])
-  (cbinary-search+ 3 [1 3 4 6 8 9 11])
-  (cbinary-search+ 4 [1 3 4 6 8 9 11])
-  (cbinary-search+ 6 [1 3 4 6 8 9 11])
-  (cbinary-search+ 8 [1 3 4 6 8 9 11])
-  (cbinary-search+ 9 [1 3 4 6 8 9 11])
-  (cbinary-search+ 12 [1 3 4 6 8 9 11])
-  (cbinary-search+ 4 [4])
-  (cbinary-search 4 [1 3 4 6 8 9 11] 0 7)
-  (cbinary-search 4 [1 3 4] 0 4)
-  (cbinary-search 4 [4] 2 4)
-  (cbinary-search 1 [1] 0 3)
-  (cbinary-search :right 11 [8 9 11] 3)                     ;3
-  (cbinary-search :right 11 [11] 5)                         ;3
-  (cbinary-search 1 [1 3 4] 3)                              ;1
-  (cbinary-search 1 [1] 1))                                 ;0
-
+(defn cbinary-search [n v]
+  (let [fixed-point?              (complement coll?)
+        binary-search-fixed-point #(if (fixed-point? %1) %1 (binary-search-step %1))]
+    (->> [n v 0 (count v)]
+      (iterate binary-search-fixed-point)
+      (filter fixed-point?)
+      (first))))
 
 
 (defn search-for [n coll]
   (let [sorted-v (into [] (sort coll))
-        idx      (cbinary-search+ n sorted-v)]
+        idx      (cbinary-search n sorted-v)]
     (if (> idx -1)
       idx
       (throw (Exception. "not found")))))
