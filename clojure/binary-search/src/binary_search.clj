@@ -12,39 +12,34 @@
   (Collections/binarySearch coll n))
 
 
-(defn binary-search-step [[n v start-idx excluded-end-idx]]
-  (let [mid-idx          (middle v)
-        mid-val          (get v mid-idx)
-        excluded-mid-idx (inc mid-idx)
-        half-right-vec   #(subvec %1 excluded-mid-idx)
-        half-left-vec    #(subvec %1 0 mid-idx)]
-    (cond
-      (empty? v) -1
+(defn cbinary-search [subject candidates]
+  (loop [n                subject
+         v                candidates
+         start-idx        0
+         excluded-end-idx (count v)]
+    (let [mid-idx          (middle v)
+          mid-val          (get v mid-idx)
+          excluded-mid-idx (inc mid-idx)
+          half-right-vec   #(subvec %1 excluded-mid-idx)
+          half-left-vec    #(subvec %1 0 mid-idx)]
+      (cond
+        (empty? v) -1
 
-      (> n mid-val)
-      [n
-       (half-right-vec v)
-       (+ start-idx excluded-mid-idx)
-       excluded-end-idx]
+        (> n mid-val)
+        (recur
+          n
+          (half-right-vec v)
+          (+ start-idx excluded-mid-idx)
+          excluded-end-idx)
 
-      (< n mid-val)
-      [n
-       (half-left-vec v)
-       start-idx
-       (- excluded-end-idx mid-idx)]
+        (< n mid-val)
+        (recur
+          n
+          (half-left-vec v)
+          start-idx
+          (- excluded-end-idx mid-idx))
 
-      :else (+ start-idx mid-idx))))
-
-
-(defn cbinary-search [n v]
-  (let [fixed-point?              (complement coll?)
-        binary-search-fixed-point #(if (fixed-point? %1)
-                                     %1
-                                     (binary-search-step %1))]
-    (->> [n v 0 (count v)]
-      (iterate binary-search-fixed-point)
-      (filter fixed-point?)
-      (first))))
+        :else (+ start-idx mid-idx)))))
 
 
 (defn search-for [n coll]
