@@ -4,20 +4,24 @@
    [java.time DayOfWeek LocalDate]))
 
 
-(defn day-by-dow [^Integer month ^Integer year]
-  (let [dow             {DayOfWeek/MONDAY    :monday
-                         DayOfWeek/TUESDAY   :tuesday
-                         DayOfWeek/WEDNESDAY :wednesday
-                         DayOfWeek/THURSDAY  :thursday
-                         DayOfWeek/FRIDAY    :friday
-                         DayOfWeek/SATURDAY  :saturday
-                         DayOfWeek/SUNDAY    :sunday}
-        dom->dow        #(-> (LocalDate/of year month ^Integer %1) (DayOfWeek/from) (dow))
-        length-of-month (-> (LocalDate/of year month 1) (.lengthOfMonth))]
-    (->> (inc length-of-month)
+(defn day [^Integer month ^Integer year ^Integer dom]
+  (let [dow      {DayOfWeek/MONDAY    :monday
+                  DayOfWeek/TUESDAY   :tuesday
+                  DayOfWeek/WEDNESDAY :wednesday
+                  DayOfWeek/THURSDAY  :thursday
+                  DayOfWeek/FRIDAY    :friday
+                  DayOfWeek/SATURDAY  :saturday
+                  DayOfWeek/SUNDAY    :sunday}
+        dom->dow (-> (LocalDate/of year month dom) (DayOfWeek/from) (dow))]
+    {:day-of-week dom->dow :day-of-month dom}))
+
+
+(defn day-seq [^Integer month ^Integer year]
+  (let [length-of-month (-> (LocalDate/of year month 1) (.lengthOfMonth))]
+    (->> length-of-month
+      (inc)
       (range 1)
-      (map #(hash-map :day-of-week (dom->dow %1) :day-of-month %1))
-      (group-by :day-of-week))))
+      (map #(day month year %1)))))
 
 
 (defn nth-day [day-coll desc]
@@ -33,9 +37,11 @@
 
 
 (defn meetup [month year day-of-week desc]
-  (-> (day-by-dow month year)
-    (get day-of-week)
-    (nth-day desc)
-    (get :day-of-month)
-    (list)
-    (conj month year)))
+  (let [group-by-dow #(group-by :day-of-week %1)]
+    (-> (day-seq month year)
+      (group-by-dow)
+      (get day-of-week)
+      (nth-day desc)
+      (get :day-of-month)
+      (list)
+      (conj month year))))
