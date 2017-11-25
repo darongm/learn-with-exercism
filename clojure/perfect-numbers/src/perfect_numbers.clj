@@ -2,7 +2,7 @@
 
 
 (defn classify- [n]
-  (let [factors (->> n (range 1) (filter #(= 0 (mod n %))))
+  (let [factors (->> n (range 1) (filter #(zero? (mod n %))))
         sum     (reduce + factors)]
     (cond
       (> n sum) :deficient
@@ -11,6 +11,6 @@
 
 
 (defn classify [n]
-  (if (< n 0)
+  (if (neg? n)
     (throw (IllegalArgumentException.))
     (classify- n)))
