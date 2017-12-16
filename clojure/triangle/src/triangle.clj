@@ -2,18 +2,15 @@
 
 
 (defn type [a b c]
-  (let [unique-count (count (hash-set a b c))]
+  (let [unique-side-length (count (hash-set a b c))
+        illogical?         (or
+                             (> 0 a b c)
+                             (>= a (+ b c))
+                             (>= b (+ a c))
+                             (>= c (+ a b)))]
     (cond
-      (or
-        (> 0 a b c)
-        (>= a (+ b c))
-        (>= b (+ a c))
-        (>= c (+ a b)))
-      :illogical
-
-      (= unique-count 1) :equilateral
-
-      (= unique-count 2) :isosceles
-
+      illogical? :illogical
+      (= unique-side-length 1) :equilateral
+      (= unique-side-length 2) :isosceles
       :else :scalene)))
 
