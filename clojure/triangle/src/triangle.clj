@@ -1,4 +1,5 @@
-(ns triangle)
+(ns triangle
+  (:refer-clojure :exclude [type]))
 
 
 (defn type [a b c]
