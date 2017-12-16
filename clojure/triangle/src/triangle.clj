@@ -2,17 +2,18 @@
 
 
 (defn type [a b c]
-  (cond
-    (or
-      (> 0 a b c)
-      (>= a (+ b c))
-      (>= b (+ a c))
-      (>= c (+ a b)))
-    :illogical
+  (let [unique-count (count (hash-set a b c))]
+    (cond
+      (or
+        (> 0 a b c)
+        (>= a (+ b c))
+        (>= b (+ a c))
+        (>= c (+ a b)))
+      :illogical
 
-    (= a b c) :equilateral
+      (= unique-count 1) :equilateral
 
-    (or (= a b) (= a c) (= b c)) :isosceles
+      (= unique-count 2) :isosceles
 
-    :else :scalene))
+      :else :scalene)))
 
