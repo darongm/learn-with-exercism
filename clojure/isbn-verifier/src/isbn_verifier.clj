@@ -3,7 +3,7 @@
 
 (defn parse-isbn [isbn]
   (->> isbn
-    (re-seq #"(\d)-(\d)(\d)(\d)-(\d)(\d)(\d)(\d)(\d)-(\d|X)")
+    (re-seq #"(\d)-?(\d)(\d)(\d)-?(\d)(\d)(\d)(\d)(\d)-?(\d|X)")
     (first)
     (rest)))
 
