@@ -19,6 +19,14 @@
       (zero?))))
 
 
+(defn replace-x [digits]
+  (-> digits
+    (butlast)
+    (concat ["10"])))
+
+
 (defn isbn? [isbn]
   (let [digits (parse-isbn isbn)]
-    (valid-formula? digits)))
+    (cond
+      (= "X" (last digits)) (valid-formula? (replace-x digits))
+      :else (valid-formula? digits))))
