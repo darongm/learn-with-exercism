@@ -3,7 +3,7 @@
 
 (defn parse-isbn [isbn]
   (->> isbn
-    (re-seq #"(\d)-?(\d)(\d)(\d)-?(\d)(\d)(\d)(\d)(\d)-?(\d|X)")
+    (re-seq #"(\d)-?(\d)(\d)(\d)-?(\d)(\d)(\d)(\d)(\d)-?([\d|X]+)")
     (first)
     (rest)))
 
@@ -29,5 +29,6 @@
   (let [digits (parse-isbn isbn)]
     (cond
       (not= 10 (count digits)) false
+      (not= 1 (count (last digits))) false
       (= "X" (last digits)) (valid-formula? (replace-x digits))
       :else (valid-formula? digits))))

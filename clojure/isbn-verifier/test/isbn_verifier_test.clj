@@ -23,20 +23,20 @@
 (deftest valid-isbn-without-separating-dashes
   (is (= true (isbn? "3598215088"))))
 
-;(deftest isbn-without-separating-dashes-and-X-as-check-digit
-;  (is (= true (isbn? "359821507X"))))
-;
-;(deftest isbn-without-check-digit-and-dashes
-;  (is (= false (isbn? "359821507"))))
-;
-;(deftest too-long-isbn-and-no-dashes
-;  (is (= false (isbn? "3598215078X"))))
-;
-;(deftest isbn-without-check-digit
-;  (is (= false (isbn? "3-598-21507"))))
-;
-;(deftest too-long-isbn
-;  (is (= false (isbn? "3-598-21507-XX"))))
-;
+(deftest isbn-without-separating-dashes-and-X-as-check-digit
+  (is (= true (isbn? "359821507X"))))
+
+(deftest isbn-without-check-digit-and-dashes
+  (is (= false (isbn? "359821507"))))
+
+(deftest too-long-isbn-and-no-dashes
+  (is (= false (isbn? "3598215078X"))))
+
+(deftest isbn-without-check-digit
+  (is (= false (isbn? "3-598-21507"))))
+
+(deftest too-long-isbn
+  (is (= false (isbn? "3-598-21507-XX"))))
+
 ;(deftest check-digit-of-X-should-not-be-used-for-0
 ;  (is (= false (isbn? "3-598-21515-X"))))
