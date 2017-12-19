@@ -10,7 +10,7 @@
 
 (defn valid-formula? [digits]
   (let [mod-11     #(mod % 11)
-        factors    (range 1 (inc (count digits)))
+        factors    (map inc (range))
         int-digits (map #(Integer/parseInt %) digits)]
     (->>
       (map * int-digits factors)
