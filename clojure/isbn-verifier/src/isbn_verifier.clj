@@ -28,5 +28,6 @@
 (defn isbn? [isbn]
   (let [digits (parse-isbn isbn)]
     (cond
+      (not= 10 (count digits)) false
       (= "X" (last digits)) (valid-formula? (replace-x digits))
       :else (valid-formula? digits))))

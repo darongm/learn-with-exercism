@@ -11,9 +11,9 @@
 (deftest valid-isbn-number-with-a-check-digit-of-10
   (is (= true (isbn? "3-598-21507-X"))))
 
-;(deftest check-digit-is-a-character-other-than-X
-;  (is (= false (isbn? "3-598-21507-A"))))
-;
+(deftest check-digit-is-a-character-other-than-X
+  (is (= false (isbn? "3-598-21507-A"))))
+
 ;(deftest invalid-character-in-isbn
 ;  (is (= false (isbn? "3-598-2K507-0"))))
 ;
