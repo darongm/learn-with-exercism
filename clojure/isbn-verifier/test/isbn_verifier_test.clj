@@ -38,5 +38,5 @@
 (deftest too-long-isbn
   (is (= false (isbn? "3-598-21507-XX"))))
 
-;(deftest check-digit-of-X-should-not-be-used-for-0
-;  (is (= false (isbn? "3-598-21515-X"))))
+(deftest check-digit-of-X-should-not-be-used-for-0
+  (is (= false (isbn? "3-598-21515-X"))))
