@@ -16,6 +16,7 @@
         score-by-letter (reduce-kv #(merge %1 (letter->value %2 %3)) {} scores)]
     (->> letter
       (string/lower-case)
+      ; inspired the hash map naming from http://www.lispcast.com/clojure-hashmaps
       (get score-by-letter))))
 
 
