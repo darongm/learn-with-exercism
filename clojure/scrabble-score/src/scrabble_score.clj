@@ -12,8 +12,8 @@
                          ["k"]                                     5
                          ["j" "x"]                                 8
                          ["q" "z"]                                 10}
-        letter->value   (fn [k v] (zipmap k (repeat v)))
-        score-by-letter (reduce-kv #(merge %1 (letter->value %2 %3)) {} scores)]
+        split-key-map   (fn [ks v] (zipmap ks (repeat v)))
+        score-by-letter (reduce-kv #(merge %1 (split-key-map %2 %3)) {} scores)]
     (->> letter
       (string/lower-case)
       ; inspired the hash map naming from http://www.lispcast.com/clojure-hashmaps
