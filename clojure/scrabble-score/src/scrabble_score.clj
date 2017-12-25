@@ -1,7 +1,10 @@
-(ns scrabble-score)
+(ns scrabble-score
+  (:require
+   [clojure.string :as string]))
 
 
 (defn score-letter [letter]
+  {:pre [(= 1 (count letter))]}
   (let [value->letter {1  ["a" "e" "i" "o" "u" "l" "n" "r" "s" "t"]
                        2  ["d" "g"]
                        3  ["b" "c" "m" "p"]
@@ -12,7 +15,7 @@
         letter->value (->> value->letter
                         (mapcat (fn [[k v]] (zipmap v (repeat k))))
                         (into (hash-map)))]
-    (letter->value letter)))
+    (-> letter (string/lower-case) (letter->value))))
 
 
 (defn score-word [_])

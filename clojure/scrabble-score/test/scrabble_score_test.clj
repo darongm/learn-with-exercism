@@ -5,9 +5,9 @@
 (deftest lower-case-letter
   (is (= 1 (scrabble-score/score-letter "a"))))
 
-;(deftest upper-case-letter
-;  (is (= 1 (scrabble-score/score-letter "A"))))
-;
+(deftest upper-case-letter
+  (is (= 1 (scrabble-score/score-letter "A"))))
+
 ;(deftest two-letter-word
 ;  (is (= 2 (scrabble-score/score-word "at"))))
 ;
