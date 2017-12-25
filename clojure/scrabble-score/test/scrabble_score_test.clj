@@ -8,9 +8,9 @@
 (deftest upper-case-letter
   (is (= 1 (scrabble-score/score-letter "A"))))
 
-;(deftest two-letter-word
-;  (is (= 2 (scrabble-score/score-word "at"))))
-;
+(deftest two-letter-word
+  (is (= 2 (scrabble-score/score-word "at"))))
+
 ;(deftest bigger-word-1
 ;  (is (= 6 (scrabble-score/score-word "street"))))
 ;

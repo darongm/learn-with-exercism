@@ -18,4 +18,7 @@
     (-> letter (string/lower-case) (letter->value))))
 
 
-(defn score-word [_])
+(defn score-word [word]
+  (->> word
+    (map score-letter)
+    (reduce +)))
