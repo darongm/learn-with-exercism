@@ -4,7 +4,7 @@
 
 
 (defn score-letter [letter]
-  {:pre [(= 1 (count letter))]}
+  {:pre [(or (char? letter) (= 1 (count letter)))]}
   (let [value->letter {1  ["a" "e" "i" "o" "u" "l" "n" "r" "s" "t"]
                        2  ["d" "g"]
                        3  ["b" "c" "m" "p"]
