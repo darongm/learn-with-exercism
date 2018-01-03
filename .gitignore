@@ -3,3 +3,5 @@
 .lein*
 target
 .nrepl*
+
+.DS_Store
