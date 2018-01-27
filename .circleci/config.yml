@@ -6,11 +6,12 @@ jobs:
   build:
     docker:
       - image: circleci/clojure:lein-2.7.1
-    working_directory: ~/repo
+    working_directory: ~/repo/clojure/anagram
     environment:
       LEIN_ROOT: "true"
     steps:
       - checkout
+          path: ~/repo
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "project.clj" }}
