@@ -1,0 +1,4 @@
+notify:
+  webhooks:
+    - url: https://webhook.atomist.com/atomist/circle/teams/T7MG11DK3
+
