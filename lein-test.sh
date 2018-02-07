@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-for d in `find $(pwd)/clojure/ -type d -mindepth 1 -maxdepth 1`; do
+for d in `find $(pwd)/clojure/ -mindepth 1 -maxdepth 1 -type d`; do
   cd $d
   echo $(pwd)
   lein test
