@@ -16,9 +16,9 @@ jobs:
           keys:
           - v1-dependencies-{{ .Branch }}
           - v1-dependencies-
-      - run: ./lein-deps.sh
+      - run: bash ./lein-deps.sh
       - save_cache:
           paths:
             - ~/.m2
           key: v1-dependencies-{{ .Branch }}
-      - run: ./lein-test.sh
+      - run: bash ./lein-test.sh
