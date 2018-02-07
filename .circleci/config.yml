@@ -6,7 +6,7 @@ jobs:
   build:
     docker:
       - image: circleci/clojure:lein-2.7.1
-    working_directory: ~/repo/clojure/anagram
+    working_directory: ~/repo
     environment:
       LEIN_ROOT: "true"
     steps:
@@ -14,12 +14,11 @@ jobs:
           path: ~/repo
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "project.clj" }}
+          - v1-dependencies-{{ find . -name project.clj -type f -exec md5sum "{}" + | md5sum }}
           - v1-dependencies-
-      - run: lein deps
+      - run: lein-deps.sh
       - save_cache:
           paths:
             - ~/.m2
-          key: v1-dependencies-{{ checksum "project.clj" }}
-      - run: lein test
-
+          key: v1-dependencies-{{ find . -name project.clj -type f -exec md5sum "{}" + | md5sum }}
+      - run: lein-test.sh
