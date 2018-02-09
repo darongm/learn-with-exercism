@@ -1,7 +1,19 @@
 (ns armstrong-numbers)
 
+
+(defn digits [n]
+  (map #(Character/getNumericValue ^Character %) (str n)))
+
+
+(defn sum-digits-raised-to-power [digit-coll]
+  (let [digit-count (count digit-coll)]
+    (->> digit-coll
+         (map #(Math/pow %1 digit-count))
+         (reduce +))))
+
+
 (defn armstrong? [n]
-  (let [digits (map #(Character/getNumericValue ^Character %) (str n))
-        digit-count (count digits)
-        sum (->> digits (map #(Math/pow %1 digit-count)) (reduce +))]
-    (zero? (- n sum))))
+  (-> n
+      (digits)
+      (sum-digits-raised-to-power)
+      (== n)))
