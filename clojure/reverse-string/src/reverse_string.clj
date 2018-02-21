@@ -1,5 +1,9 @@
-(ns reverse-string)
+(ns reverse-string
+  (:require
+    [clojure.string :as string]))
 
-(defn reverse-string [] ;; <- arglist goes here
-  ;; your code goes here
-)
+
+(defn reverse-string [st]
+  (-> (seq st) (reverse) (string/join)))
+
+
