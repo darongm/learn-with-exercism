@@ -1,6 +1,11 @@
 (ns reverse-string-test
-  (:require [clojure.test :refer [deftest is]]
-            reverse-string))
+  (:require
+    [clojure.test :refer [deftest is]]
+    [clojure.test.check :as tc]
+    [clojure.test.check.generators :as gen]
+    [clojure.test.check.properties :as prop]
+    [clojure.test.check.clojure-test :refer [defspec]]
+    reverse-string))
 
 (deftest empty-string-test
   (is (= "" (reverse-string/reverse-string ""))))
@@ -16,3 +21,8 @@
 
 (deftest palindrome-test
   (is (= "racecar" (reverse-string/reverse-string "racecar"))))
+
+
+(defspec double-reverse-should-be-the-same 100
+  (prop/for-all [s gen/string]
+    (= s (reverse-string/reverse-string (reverse-string/reverse-string s)))))
