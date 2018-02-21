@@ -4,6 +4,6 @@
 
 
 (defn reverse-string [st]
-  (->> (seq st) (reduce conj '()) (string/join)))
+  (->> st (reduce conj '()) (string/join)))
 
 
