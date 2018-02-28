@@ -4,6 +4,7 @@
     [clojure.test.check.clojure-test :refer [defspec]]
     [clojure.test.check.generators :as gen]
     [clojure.test.check.properties :as prop]
+    [clojure.string :as string]
     say))
 
 
@@ -16,35 +17,33 @@
 
 
 (def zero-to-twenty
-  {0  "zero"
-   1  "one"
-   2  "two"
-   3  "three"
-   4  "four"
-   5  "five"
-   6  "six"
-   7  "seven"
-   8  "eight"
-   9  "nine"
-   10 "ten"
-   11 "eleven"
-   12 "twelve"
-   13 "thirteen"
-   14 "fourteen"
-   15 "fifteen"
-   16 "sixteen"
-   17 "seventeen"
-   18 "eighteen"
-   19 "nineteen"
-   20 "twenty"})
+  #{"zero"
+    "one"
+    "two"
+    "three"
+    "four"
+    "five"
+    "six"
+    "seven"
+    "eight"
+    "nine"
+    "ten"
+    "eleven"
+    "twelve"
+    "thirteen"
+    "fourteen"
+    "fifteen"
+    "sixteen"
+    "seventeen"
+    "eighteen"
+    "nineteen"
+    "twenty"})
 
 
-(def gen-zero-to-twenty (gen/elements zero-to-twenty))
-
-
-(defspec prop-unique-word-one-to-twenty 100
-  (prop/for-all [[n word] gen-zero-to-twenty]
-    (= word (say/number n))))
+(defspec prop-end-with-one-of-word-between-zero-to-twenty 100
+  (prop/for-all [n gen-valid-number]
+    (let [word (say/number n)]
+      (some #(string/ends-with? word %) zero-to-twenty))))
 
 
 (def gen-21-29 (gen/large-integer* {:min 21 :max (dec' 30)}))
