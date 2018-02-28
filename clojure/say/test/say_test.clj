@@ -46,7 +46,7 @@
       (some #(string/ends-with? word %) zero-to-twenty))))
 
 
-(defspec prop-twenty 100
+(defspec prop-twenty-ish-start-with-twenty 100
   (prop/for-all [n (gen/large-integer* {:min 21 :max (dec' 30)})]
     (re-find #"twenty-" (say/number n))))
 
