@@ -1,20 +1,59 @@
 (ns say-test
   (:require
     [clojure.test :refer [deftest is]]
+    [clojure.test.check.clojure-test :refer [defspec]]
+    [clojure.test.check.generators :as gen]
+    [clojure.test.check.properties :as prop]
     say))
 
-;(deftest zero-test
-;  (is (= "zero" (say/number 0))))
-;
-;(deftest one-test
-;  (is (= "one" (say/number 1))))
-;
-;(deftest fourteen-test
-;  (is (= "fourteen" (say/number 14))))
-;
-;(deftest twenty-test
-;  (is (= "twenty" (say/number 20))))
-;
+
+(def gen-valid-number (gen/large-integer* {:min 0 :max (- 1e12 1)}))
+
+
+(def zero-to-twenty
+  {0  "zero"
+   1  "one"
+   2  "two"
+   3  "three"
+   4  "four"
+   5  "five"
+   6  "six"
+   7  "seven"
+   8  "eight"
+   9  "nine"
+   10 "ten"
+   11 "eleven"
+   12 "twelve"
+   13 "thirteen"
+   14 "fourteen"
+   15 "fifteen"
+   16 "sixteen"
+   17 "seventeen"
+   18 "eighteen"
+   19 "nineteen"
+   20 "twenty"})
+
+
+(def gen-zero-to-twenty (gen/elements zero-to-twenty))
+
+
+(defspec prop-unique-word-one-to-twenty 100
+  (prop/for-all [[n word] gen-zero-to-twenty]
+    (= word (say/number n))))
+
+
+(deftest zero-test
+  (is (= "zero" (say/number 0))))
+
+(deftest one-test
+  (is (= "one" (say/number 1))))
+
+(deftest fourteen-test
+  (is (= "fourteen" (say/number 14))))
+
+(deftest twenty-test
+  (is (= "twenty" (say/number 20))))
+
 ;(deftest twenty-two-test
 ;  (is (= "twenty-two" (say/number 22))))
 ;
