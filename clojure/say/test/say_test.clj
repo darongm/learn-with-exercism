@@ -7,7 +7,12 @@
     say))
 
 
-(def gen-valid-number (gen/large-integer* {:min 0 :max (- 1e12 1)}))
+(def gen-valid-number (gen/large-integer* {:min 0 :max (dec' 1e12)}))
+
+
+(defspec prop-should-not-blow-up-for-every-valid-input 100
+  (prop/for-all [n gen-valid-number]
+    (say/number n)))
 
 
 (def zero-to-twenty
