@@ -11,11 +11,6 @@
 (def gen-valid-number (gen/large-integer* {:min 0 :max (dec' 1e12)}))
 
 
-(defspec prop-should-not-blow-up-for-every-valid-input 100
-  (prop/for-all [n gen-valid-number]
-    (say/number n)))
-
-
 (def zero-to-twenty
   #{"zero"
     "one"
@@ -40,17 +35,19 @@
     "twenty"})
 
 
+(defspec prop-should-not-blow-up-for-every-valid-input 100
+  (prop/for-all [n gen-valid-number]
+    (say/number n)))
+
+
 (defspec prop-end-with-one-of-word-between-zero-to-twenty 100
   (prop/for-all [n gen-valid-number]
     (let [word (say/number n)]
       (some #(string/ends-with? word %) zero-to-twenty))))
 
 
-(def gen-21-29 (gen/large-integer* {:min 21 :max (dec' 30)}))
-
-
 (defspec prop-twenty 100
-  (prop/for-all [n gen-21-29]
+  (prop/for-all [n (gen/large-integer* {:min 21 :max (dec' 30)})]
     (re-find #"twenty-" (say/number n))))
 
 
