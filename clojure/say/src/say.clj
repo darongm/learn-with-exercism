@@ -25,9 +25,10 @@
    20 "twenty"})
 
 
-(defn number- [n]
+(defn- number- [n]
   (cond
     (<= n 20) (word-zero-to-twenty n)
+    (< n 30) (str "twenty-" (number- (- n 20)))
     :else ""))
 
 

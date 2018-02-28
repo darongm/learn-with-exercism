@@ -47,6 +47,14 @@
     (= word (say/number n))))
 
 
+(def gen-21-29 (gen/large-integer* {:min 21 :max (dec' 30)}))
+
+
+(defspec prop-twenty 100
+  (prop/for-all [n gen-21-29]
+    (re-find #"twenty-" (say/number n))))
+
+
 (deftest zero-test
   (is (= "zero" (say/number 0))))
 
@@ -59,9 +67,9 @@
 (deftest twenty-test
   (is (= "twenty" (say/number 20))))
 
-;(deftest twenty-two-test
-;  (is (= "twenty-two" (say/number 22))))
-;
+(deftest twenty-two-test
+  (is (= "twenty-two" (say/number 22))))
+
 ;(deftest one-hundred-test
 ;  (is (= "one hundred" (say/number 100))))
 ;
