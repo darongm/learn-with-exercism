@@ -11,7 +11,7 @@
 (def gen-valid-number (gen/large-integer* {:min 0 :max (dec' 1e12)}))
 
 
-(def zero-to-twenty
+(def counting-word
   #{"zero"
     "one"
     "two"
@@ -32,7 +32,14 @@
     "seventeen"
     "eighteen"
     "nineteen"
-    "twenty"})
+    "twenty"
+    "thirty"
+    "forty"
+    "fifty"
+    "sixty"
+    "seventy"
+    "eighty"
+    "ninety"})
 
 
 (defspec prop-should-not-blow-up-for-every-valid-input 100
@@ -40,15 +47,37 @@
     (say/number n)))
 
 
-(defspec prop-end-with-one-of-word-between-zero-to-twenty 100
-  (prop/for-all [n gen-valid-number]
+(defspec prop-end-with-counting-word 100
+  (prop/for-all [n (gen/large-integer* {:min 0 :max 99})]
     (let [word (say/number n)]
-      (some #(string/ends-with? word %) zero-to-twenty))))
+      (some #(string/ends-with? word %) counting-word))))
 
 
-(defspec prop-twenty-ish-start-with-twenty 100
-  (prop/for-all [n (gen/large-integer* {:min 21 :max (dec' 30)})]
-    (re-find #"twenty-" (say/number n))))
+(defspec prop-zero-is-only-one-word 100
+  (prop/for-all [n gen-valid-number]
+    (or
+      (= "zero" (say/number n))
+      (not (re-find #"zero" (say/number n))))))
+
+
+(defspec prop-ty-number-from-twenty-till-ninety 100
+  (prop/for-all [n (gen/large-integer* {:min 20 :max 99})]
+    (or
+      (re-find #"^twenty" (say/number n))
+      (re-find #"^thirty" (say/number n))
+      (re-find #"^forty" (say/number n))
+      (re-find #"^fifty" (say/number n))
+      (re-find #"^sixty" (say/number n))
+      (re-find #"^seventy" (say/number n))
+      (re-find #"^eighty" (say/number n))
+      (re-find #"^ninety" (say/number n)))))
+
+
+(defspec prop-ty-number-end-with-ty-or-separate-by-dash 100
+  (prop/for-all [n (gen/large-integer* {:min 20 :max 99})]
+    (or
+      (string/ends-with? (say/number n) "ty")
+      (= 2 (count (string/split (say/number n) #"-"))))))
 
 
 (deftest zero-test
