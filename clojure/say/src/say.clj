@@ -2,7 +2,7 @@
   (:require [clojure.string :as string]))
 
 
-(def count-in-word
+(def single-word
   {0  "zero"
    1  "one"
    2  "two"
@@ -33,24 +33,24 @@
    90 "ninety"})
 
 
-(defn- count-in-word-loop-recur [number]
+(defn- single-word-coll [number]
   (loop [n number
          result []]
     (cond
       (<= n 20)
-      (conj result (count-in-word n))
+      (conj result (single-word n))
 
       (zero? (mod n 10))
-      (conj result (count-in-word n))
+      (conj result (single-word n))
 
       :else
       (recur
         (mod n 10)
-        (conj result (count-in-word (- n (mod n 10))))))))
+        (conj result (single-word (- n (mod n 10))))))))
 
 
 (defn- number- [n]
-  (string/join "-" (count-in-word-loop-recur n)))
+  (string/join "-" (single-word-coll n)))
 
 
 (defn number [n]

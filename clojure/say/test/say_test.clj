@@ -11,7 +11,7 @@
 (def gen-valid-number (gen/large-integer* {:min 0 :max (dec' 1e12)}))
 
 
-(def counting-word
+(def all-allowed-counting-word
   #{"zero"
     "one"
     "two"
@@ -47,10 +47,11 @@
     (say/number n)))
 
 
-(defspec prop-end-with-counting-word 100
+(defspec prop-compose-of-allowed-word 100
   (prop/for-all [n (gen/large-integer* {:min 0 :max 99})]
-    (let [word (say/number n)]
-      (some #(string/ends-with? word %) counting-word))))
+    (let [spelled-word (say/number n)
+          single-word-coll (string/split spelled-word #"[- ]")]
+      (every? all-allowed-counting-word single-word-coll))))
 
 
 (defspec prop-zero-is-only-one-word 100
