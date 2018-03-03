@@ -62,6 +62,7 @@
         (not (string/includes? spelled-word "zero"))))))
 
 
+;; TODO: evaluate if the property provides any value
 (defspec prop-ty-number-from-twenty-till-ninety 100
   (prop/for-all [x (gen/large-integer* {:min 20 :max 99})]
     (or
