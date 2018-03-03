@@ -104,12 +104,12 @@
 (deftest one-hundred-twenty-three-test
   (is (= "one hundred twenty-three" (say/number 123))))
 
-;(deftest one-thousand-test
-;  (is (= "one thousand" (say/number 1000))))
-;
-;(deftest one-thousand-two-hundred-thirty-four-test
-;  (is (= "one thousand two hundred thirty-four" (say/number 1234))))
-;
+(deftest one-thousand-test
+  (is (= "one thousand" (say/number 1000))))
+
+(deftest one-thousand-two-hundred-thirty-four-test
+  (is (= "one thousand two hundred thirty-four" (say/number 1234))))
+
 ;(deftest one-million-test
 ;  (is (= "one million" (say/number 1000000))))
 ;
