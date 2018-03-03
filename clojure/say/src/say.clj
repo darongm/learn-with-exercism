@@ -33,27 +33,27 @@
    90 "ninety"})
 
 
-(defn- single-word-coll [number]
-  (loop [n number
-         result []]
+(defn- single-word-coll [x]
+  (loop [y x
+         coll []]
     (cond
-      (<= n 20)
-      (conj result (single-word n))
+      (<= y 20)
+      (conj coll (single-word y))
 
-      (zero? (mod n 10))
-      (conj result (single-word n))
+      (zero? (mod y 10))
+      (conj coll (single-word y))
 
       :else
       (recur
-        (mod n 10)
-        (conj result (single-word (- n (mod n 10))))))))
+        (mod y 10)
+        (conj coll (single-word (- y (mod y 10))))))))
 
 
-(defn- number- [n]
-  (string/join "-" (single-word-coll n)))
+(defn- number- [x]
+  (string/join "-" (single-word-coll x)))
 
 
-(defn number [n]
-  (if (and (< -1 n) (< n 1e12))
-    (number- n)
+(defn number [x]
+  (if (and (< -1 x) (< x 1e12))
+    (number- x)
     (throw (IllegalArgumentException.))))

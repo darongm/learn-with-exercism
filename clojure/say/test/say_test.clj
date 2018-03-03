@@ -43,42 +43,43 @@
 
 
 (defspec prop-should-not-blow-up-for-every-valid-input 100
-  (prop/for-all [n gen-valid-number]
-    (say/number n)))
+  (prop/for-all [x gen-valid-number]
+    (say/number x)))
 
 
 (defspec prop-compose-of-allowed-word 100
-  (prop/for-all [n (gen/large-integer* {:min 0 :max 99})]
-    (let [spelled-word (say/number n)
+  (prop/for-all [x (gen/large-integer* {:min 0 :max 99})]
+    (let [spelled-word (say/number x)
           single-word-coll (string/split spelled-word #"[- ]")]
       (every? all-allowed-counting-word single-word-coll))))
 
 
 (defspec prop-zero-is-only-one-word 100
-  (prop/for-all [n gen-valid-number]
-    (or
-      (= "zero" (say/number n))
-      (not (re-find #"zero" (say/number n))))))
+  (prop/for-all [x gen-valid-number]
+    (let [spelled-word (say/number x)]
+      (or
+        (= "zero" spelled-word)
+        (not (string/includes? spelled-word "zero"))))))
 
 
 (defspec prop-ty-number-from-twenty-till-ninety 100
-  (prop/for-all [n (gen/large-integer* {:min 20 :max 99})]
+  (prop/for-all [x (gen/large-integer* {:min 20 :max 99})]
     (or
-      (re-find #"^twenty" (say/number n))
-      (re-find #"^thirty" (say/number n))
-      (re-find #"^forty" (say/number n))
-      (re-find #"^fifty" (say/number n))
-      (re-find #"^sixty" (say/number n))
-      (re-find #"^seventy" (say/number n))
-      (re-find #"^eighty" (say/number n))
-      (re-find #"^ninety" (say/number n)))))
+      (re-find #"^twenty" (say/number x))
+      (re-find #"^thirty" (say/number x))
+      (re-find #"^forty" (say/number x))
+      (re-find #"^fifty" (say/number x))
+      (re-find #"^sixty" (say/number x))
+      (re-find #"^seventy" (say/number x))
+      (re-find #"^eighty" (say/number x))
+      (re-find #"^ninety" (say/number x)))))
 
 
 (defspec prop-ty-number-end-with-ty-or-separate-by-dash 100
-  (prop/for-all [n (gen/large-integer* {:min 20 :max 99})]
+  (prop/for-all [x (gen/large-integer* {:min 20 :max 99})]
     (or
-      (string/ends-with? (say/number n) "ty")
-      (= 2 (count (string/split (say/number n) #"-"))))))
+      (string/ends-with? (say/number x) "ty")
+      (= 2 (count (string/split (say/number x) #"-"))))))
 
 
 (deftest zero-test
