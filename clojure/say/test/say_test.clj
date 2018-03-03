@@ -98,12 +98,12 @@
 (deftest twenty-two-test
   (is (= "twenty-two" (say/number 22))))
 
-;(deftest one-hundred-test
-;  (is (= "one hundred" (say/number 100))))
-;
-;(deftest one-hundred-twenty-three-test
-;  (is (= "one hundred twenty-three" (say/number 123))))
-;
+(deftest one-hundred-test
+  (is (= "one hundred" (say/number 100))))
+
+(deftest one-hundred-twenty-three-test
+  (is (= "one hundred twenty-three" (say/number 123))))
+
 ;(deftest one-thousand-test
 ;  (is (= "one thousand" (say/number 1000))))
 ;

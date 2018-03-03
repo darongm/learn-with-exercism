@@ -37,20 +37,33 @@
   (loop [y x
          coll []]
     (cond
-      (<= y 20)
+      (zero? y)
+      (if (not-empty coll)
+        coll
+        (conj coll (single-word y)))
+
+      (<= 100 y)
+      (recur
+        (rem y 100)
+        (-> coll
+            (conj (single-word (quot y 100)))
+            (conj "hundred")))
+
+      (zero? (rem y 10))
       (conj coll (single-word y))
 
-      (zero? (mod y 10))
-      (conj coll (single-word y))
+      (<= 20 y)
+      (conj coll (str
+                   (single-word (- y (rem y 10)))
+                   "-"
+                   (single-word (rem y 10))))
 
       :else
-      (recur
-        (mod y 10)
-        (conj coll (single-word (- y (mod y 10))))))))
+      (conj coll (single-word y)))))
 
 
 (defn- number* [x]
-  (string/join "-" (single-word-coll x)))
+  (string/join " " (single-word-coll x)))
 
 
 (defn number [x]
