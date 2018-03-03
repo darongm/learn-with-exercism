@@ -49,11 +49,11 @@
         (conj coll (single-word (- y (mod y 10))))))))
 
 
-(defn- number- [x]
+(defn- number* [x]
   (string/join "-" (single-word-coll x)))
 
 
 (defn number [x]
   (if (and (< -1 x) (< x 1e12))
-    (number- x)
+    (number* x)
     (throw (IllegalArgumentException.))))
