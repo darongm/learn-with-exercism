@@ -124,11 +124,11 @@
 (deftest one-million-two-thousand-three-hundred-forty-five-test
   (is (= "one million two thousand three hundred forty-five" (say/number 1002345))))
 
-;(deftest one-billion-test
-;  (is (= "one billion" (say/number 1000000000))))
-;
-;(deftest a-big-number-test
-;  (is (= "nine hundred eighty-seven billion six hundred fifty-four million three hundred twenty-one thousand one hundred twenty-three" (say/number 987654321123))))
+(deftest one-billion-test
+  (is (= "one billion" (say/number 1000000000))))
+
+(deftest a-big-number-test
+  (is (= "nine hundred eighty-seven billion six hundred fifty-four million three hundred twenty-one thousand one hundred twenty-three" (say/number 987654321123))))
 
 (deftest below-zero-is-out-of-range-test
   (is (thrown? IllegalArgumentException (say/number -1))))
