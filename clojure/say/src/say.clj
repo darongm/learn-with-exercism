@@ -42,13 +42,6 @@
         coll
         (conj coll (single-word y)))
 
-      (<= 1000 y)
-      (recur
-        (rem y 1000)
-        (-> coll
-            (conj (single-word (quot y 1000)))
-            (conj "thousand")))
-
       (<= 100 y)
       (recur
         (rem y 100)
