@@ -83,14 +83,15 @@
   (let [[hundred-number & more-number-coll] (chunk-into-thousands x)
         thousands-word (map #(conj (single-word-coll %1) %2)
                             more-number-coll
-                            ["thousand"])
+                            ["thousand" "million"])
         hundreds-word (single-word-coll hundred-number)]
     (->>
       (cons hundreds-word thousands-word)
       (map #(string/join " " %))
       (reverse)
       (string/join " ")
-      (#(string/replace % " zero" "")))))
+      (#(string/replace % " zero" ""))
+      (#(string/replace % "million thousand" "million")))))
 
 
 (defn number [x]

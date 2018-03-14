@@ -118,12 +118,12 @@
 (deftest one-thousand-two-hundred-thirty-four-test
   (is (= "one thousand two hundred thirty-four" (say/number 1234))))
 
-;(deftest one-million-test
-;  (is (= "one million" (say/number 1000000))))
-;
-;(deftest one-million-two-thousand-three-hundred-forty-five-test
-;  (is (= "one million two thousand three hundred forty-five" (say/number 1002345))))
-;
+(deftest one-million-test
+  (is (= "one million" (say/number 1000000))))
+
+(deftest one-million-two-thousand-three-hundred-forty-five-test
+  (is (= "one million two thousand three hundred forty-five" (say/number 1002345))))
+
 ;(deftest one-billion-test
 ;  (is (= "one billion" (say/number 1000000000))))
 ;
