@@ -69,8 +69,28 @@
       (conj coll (single-word y)))))
 
 
+(defn chunk-into-thousands [x]
+  (loop [y x
+         coll []]
+    (if (< y 1000)
+      (conj coll y)
+      (recur
+        (quot y 1000)
+        (conj coll (rem y 1000))))))
+
+
 (defn- number* [x]
-  (string/join " " (single-word-coll x)))
+  (let [[hundred-number & more-number-coll] (chunk-into-thousands x)
+        thousands-word (map #(conj (single-word-coll %1) %2)
+                            more-number-coll
+                            ["thousand"])
+        hundreds-word (single-word-coll hundred-number)]
+    (->>
+      (cons hundreds-word thousands-word)
+      (map #(string/join " " %))
+      (reverse)
+      (string/join " ")
+      (#(string/replace % " zero" "")))))
 
 
 (defn number [x]

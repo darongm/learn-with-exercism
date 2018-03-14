@@ -11,7 +11,7 @@
 (def gen-valid-number (gen/large-integer* {:min 0 :max (dec' 1e12)}))
 
 
-(def all-allowed-counting-word
+(def single-counting-word
   #{"zero"
     "one"
     "two"
@@ -42,6 +42,9 @@
     "ninety"})
 
 
+(def all-allowed-counting-word single-counting-word)
+
+
 (defspec prop-should-not-blow-up-for-every-valid-input 100
   (prop/for-all [x gen-valid-number]
     (say/number x)))
@@ -52,6 +55,11 @@
     (let [spelled-word (say/number x)
           single-word-coll (string/split spelled-word #"[- ]")]
       (every? all-allowed-counting-word single-word-coll))))
+
+
+(defspec prop-should-start-wtih-single-word 100
+  (prop/for-all [x gen-valid-number]
+    (some #(string/starts-with? (say/number x) %) single-counting-word)))
 
 
 (defspec prop-zero-is-only-one-word 100
